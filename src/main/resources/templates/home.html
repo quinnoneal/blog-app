@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<div class="container">
+    <h1>Spring Boot NGO Application Home</h1>
+    <hr />
+    <ul sec:authorize="hasRole('ROLE_ADMIN')">
+        <li><a th:href="@{/posts/new}">Create New Post</a></li>
+    </ul>
+    <ul sec:authorize="!isAuthenticated()">
+        <li><a th:href="@{/register}">Register</a></li>
+        <li><a th:href="@{/login}">Login</a></li>
+    </ul>
+    <div sec:authorize="isAuthenticated()">
+        <form action="#"
+              th:action="@{/logout}"
+              method="POST">
+            <div>
+                <label>Hi, <span sec:authentication="name">Username</span></label>
+            </div>
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
