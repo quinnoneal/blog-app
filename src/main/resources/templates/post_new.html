@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,6 +8,29 @@
     <title>Blog :: New Post</title>
 </head>
 <body>
+<nav>
+    <ul>
+        <li><a th:href="@{/}">Home</a></li>
+        <li><a th:href="@{/about}">About Us</a></li>
+        <li><a th:href="@{/donate}">Donate</a></li>
+        <li><a th:href="@{/posts}" th:if="${#authorization.expression('hasRole(''ROLE_DONOR'')')}">Blog</a></li>
+        <div sec:authorize="isAuthenticated()">
+            <form action="#"
+                  th:action="@{/logout}"
+                  method="POST">
+                <div>
+                    <label>Hi, <span sec:authentication="name">Username</span></label>
+                </div>
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+        <ul sec:authorize="!isAuthenticated()">
+            <li><a th:href="@{/register}">Register</a></li>
+            <li><a th:href="@{/login}">Login</a></li>
+        </ul>
+    </ul>
+</nav>
+
 <div class="container">
     <a th:href="@{/}">Home</a>
     <form action="#"

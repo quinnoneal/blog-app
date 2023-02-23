@@ -63,6 +63,15 @@ public class PostController {
 
     @PostMapping("/posts/new")
     public String saveNewPost(@ModelAttribute Post post, Principal principal) {
+        String authUsername = "anonymousUser";
+
+        if (principal != null) {
+            authUsername = principal.getName();
+        }
+
+        if (post.getAccount().getEmail().compareToIgnoreCase(authUsername) < 0) {
+            return "404";
+        }
         postService.save(post);
         return "redirect:/posts/" + post.getId();
     }

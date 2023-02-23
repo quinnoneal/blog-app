@@ -30,11 +30,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .headers(headers -> headers.frameOptions().disable())
                 .authorizeHttpRequests()
-                .requestMatchers(WHITELIST).permitAll()
-                .requestMatchers("/posts").hasAnyAuthority("ROLE_ADMIN", "ROLE_DONOR")
                 .requestMatchers("/posts/new").hasAnyAuthority("ROLE_ADMIN")
+                .requestMatchers("/posts").hasAnyAuthority("ROLE_ADMIN", "ROLE_DONOR")
                 .requestMatchers(PathRequest.toH2Console()).permitAll()
-                // TODO: Change post viewing permissions to donor roles and admin only
+                .requestMatchers(WHITELIST).permitAll()
                 .anyRequest().authenticated();
 
         http

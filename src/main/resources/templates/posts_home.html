@@ -8,6 +8,31 @@
 <body>
     <div class="container">
         <h1>Spring Boot Blog Application</h1>
+        <nav>
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/about}">About Us</a></li>
+                <li><a th:href="@{/donate}">Donate</a></li>
+                <ul sec:authorize="hasRole('ROLE_DONOR')">
+                    <li><a th:href="@{/posts}">Posts</a></li>
+                </ul>
+                <div sec:authorize="isAuthenticated()">
+                    <form action="#"
+                          th:action="@{/logout}"
+                          method="POST">
+                        <div>
+                            <label>Hi, <span sec:authentication="name">Username</span></label>
+                        </div>
+                        <button type="submit">Logout</button>
+                    </form>
+                </div>
+                <ul sec:authorize="!isAuthenticated()">
+                    <li><a th:href="@{/register}">Register</a></li>
+                    <li><a th:href="@{/login}">Login</a></li>
+                </ul>
+            </ul>
+        </nav>
+
         <hr />
         <ul sec:authorize="hasRole('ROLE_ADMIN')">
             <li><a th:href="@{/posts/new}">Create New Post</a></li>
